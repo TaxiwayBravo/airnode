@@ -1,0 +1,13 @@
+[Unit]
+Description=AirNode feeder software maintenance for %i
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.maintenance %i
+TimeoutStartSec=7200
+UMask=0022
+StandardOutput=journal
+StandardError=journal

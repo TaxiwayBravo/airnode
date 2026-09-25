@@ -1,0 +1,11 @@
+[Unit]
+Description=AirNode daily feeder software updates for %i
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+RandomizedDelaySec=3600
+Persistent=true
+Unit=airnode-provider-software@%i.service
+
+[Install]
+WantedBy=timers.target

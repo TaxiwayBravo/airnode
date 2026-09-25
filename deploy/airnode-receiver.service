@@ -1,0 +1,28 @@
+[Unit]
+Description=AirNode ADS-B receiver (readsb)
+After=airnode-firstboot.service
+Requires=airnode-firstboot.service
+
+[Service]
+User=airnode-radio
+Group=airnode
+SupplementaryGroups=plugdev
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.receiver
+Restart=always
+RestartSec=5
+RuntimeDirectory=airnode-readsb
+RuntimeDirectoryMode=0750
+UMask=0027
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+ReadWritePaths=/run/airnode-readsb
+
+[Install]
+WantedBy=multi-user.target

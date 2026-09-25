@@ -1,0 +1,41 @@
+name: AirNode signed release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    environment: releases
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -q
+      - run: node --check web/app.js
+      - run: for script in scripts/*.sh; do bash -n "$script"; done
+      - name: Build and sign
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_SIGNING_KEY: ${{ secrets.AIRNODE_RELEASE_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$RELEASE_SIGNING_KEY"
+          python scripts/package-release.py dist "$RELEASE_TAG"
+          key=$(mktemp)
+          trap 'rm -f "$key"' EXIT
+          chmod 600 "$key"
+          printf '%s' "$RELEASE_SIGNING_KEY" > "$key"
+          openssl dgst -sha256 -sign "$key" -out dist/airnode-release.sig dist/airnode-release.json
+          openssl dgst -sha256 -verify deploy/update-public.pem -signature dist/airnode-release.sig dist/airnode-release.json
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          flags=()
+          if [[ "$RELEASE_TAG" == *-beta.* ]]; then flags+=(--prerelease); fi
+          gh release create "$RELEASE_TAG" dist/airnode-update.tar.gz dist/airnode-release.json dist/airnode-release.sig --verify-tag --title "AirNode $RELEASE_TAG" --generate-notes "${flags[@]}"

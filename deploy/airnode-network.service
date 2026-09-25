@@ -1,0 +1,12 @@
+[Unit]
+Description=AirNode wired network provisioning
+After=local-fs.target
+Before=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/airnode/scripts/network-setup.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=AirNode Wi-Fi setup and recovery hotspot
+Requires=airnode-firstboot.service NetworkManager.service
+After=airnode-firstboot.service NetworkManager.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.wifi
+Restart=on-failure
+RestartSec=10
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

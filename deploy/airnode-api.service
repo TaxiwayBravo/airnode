@@ -1,0 +1,29 @@
+[Unit]
+Description=AirNode authenticated appliance API
+Requires=airnode-control.service
+After=airnode-control.service airnode-firstboot.service
+
+[Service]
+User=airnode
+Group=airnode
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.server
+Restart=on-failure
+RestartSec=3
+StateDirectory=airnode
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_UNIX
+ReadWritePaths=/var/lib/airnode
+
+[Install]
+WantedBy=multi-user.target

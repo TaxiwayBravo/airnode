@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.demo/
+build/
+*.img
+*.img.xz
+*.db
+*.db-*
+.venv/
+
+dist/
+*private*.pem
+airnode-wifi-setup.json
+airnode-setup-token.txt
+AIRNODE-SETUP.txt
+
+.preview/

@@ -1,0 +1,25 @@
+[Unit]
+Description=AirNode restricted system control broker
+After=airnode-firstboot.service
+Requires=airnode-firstboot.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.broker
+Restart=on-failure
+RestartSec=3
+RuntimeDirectory=airnode-control
+RuntimeDirectoryMode=0750
+Group=airnode
+UMask=0027
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_NETLINK AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

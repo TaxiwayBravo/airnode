@@ -1,0 +1,49 @@
+name: Build Raspberry Pi image
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Direct URL to a pristine Raspberry Pi OS Lite 64-bit .img.xz'
+        required: true
+        type: string
+      base_sha256:
+        description: 'SHA-256 of the decompressed .img file (64 hex characters)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    # The builder intentionally requires a native arm64 Linux host.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install image-build tools
+        run: sudo apt-get update && sudo apt-get install -y parted e2fsprogs util-linux xz-utils coreutils udev
+      - name: Download and verify Raspberry Pi OS base
+        env:
+          BASE_URL: ${{ inputs.base_url }}
+          BASE_SHA256: ${{ inputs.base_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          curl --fail --location --retry 3 --output build/base.img.xz "$BASE_URL"
+          xz -dk build/base.img.xz
+          printf '%s  %s\n' "$BASE_SHA256" build/base.img | sha256sum --check --status
+      - name: Build image
+        run: |
+          version=$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' airnode/__init__.py)
+          sudo bash scripts/build-image.sh build/base.img "${{ inputs.base_sha256 }}" "build/airnode-${version}.img"
+      - name: Upload image artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: airnode-image
+          path: |
+            build/airnode-*.img.xz
+            build/airnode-*.img.xz.sha256
+            build/airnode-*.img.manifest
+            build/airnode-*.img.readsb.commit

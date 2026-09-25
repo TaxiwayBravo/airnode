@@ -1,0 +1,13 @@
+[Unit]
+Description=AirNode unique appliance identity and owner pairing
+Before=airnode-api.service airnode-control.service nginx.service airnode-receiver.service
+After=local-fs.target
+ConditionPathExists=!/var/lib/airnode/initialized
+
+[Service]
+Type=oneshot
+ExecStart=/opt/airnode/scripts/firstboot.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

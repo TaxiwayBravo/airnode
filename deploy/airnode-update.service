@@ -1,0 +1,13 @@
+[Unit]
+Description=AirNode operating system package update
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=DEBIAN_FRONTEND=noninteractive
+ExecStart=/usr/bin/flock /run/lock/airnode-maintenance.lock /usr/bin/apt-get -o DPkg::Lock::Timeout=120 -o APT::Update::Error-Mode=any update
+ExecStart=/usr/bin/flock /run/lock/airnode-maintenance.lock /usr/bin/apt-get -o DPkg::Lock::Timeout=120 -o Dpkg::Options::=--force-confold -y upgrade
+TimeoutStartSec=3600
+StandardOutput=journal
+StandardError=journal

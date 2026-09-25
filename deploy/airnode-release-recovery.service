@@ -1,0 +1,13 @@
+[Unit]
+Description=AirNode interrupted application update recovery
+After=local-fs.target
+Before=airnode-firstboot.service airnode-api.service airnode-control.service airnode-wifi.service
+ConditionPathExists=/etc/airnode/update-transaction.json
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/airnode-recovery.py
+ExecStartPost=/usr/bin/systemctl daemon-reload
+
+[Install]
+WantedBy=multi-user.target

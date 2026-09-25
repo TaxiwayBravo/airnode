@@ -1,0 +1,11 @@
+[Unit]
+Description=AirNode signed GitHub release %i
+Wants=network-online.target
+After=network-online.target airnode-release-recovery.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/airnode
+ExecStart=/usr/bin/python3 -m airnode.releases %i
+TimeoutStartSec=1800
+UMask=0022
