@@ -40,7 +40,7 @@ async function boot() {
     if(session.authenticated){ await loadConfig(); await refresh(); view(); }
   } catch(e) { $('auth').hidden=false; $('auth-error').textContent=e.message; }
 }
-$('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-submit').disabled=true;try{const response=await api(configured?'login':'setup',{password:$('login-password').value});csrf=response.csrf;$('login-password').value='';$('auth-error').textContent='';await boot();}catch(err){$('auth-error').textContent=err.message;}finally{$('auth-submit').disabled=false;}});
+$('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-submit').disabled=true;const firstSetup=!configured;try{const response=await api(firstSetup?'setup':'login',{password:$('login-password').value});csrf=response.csrf;$('login-password').value='';$('auth-error').textContent='';if(firstSetup)location.hash='system';await boot();}catch(err){$('auth-error').textContent=err.message;}finally{$('auth-submit').disabled=false;}});
 $('logout').addEventListener('click',()=>action(async()=>{await api('logout',{});csrf='';await boot();}));
 async function loadConfig(){
   config=await api('config'); const r=config.receiver;
