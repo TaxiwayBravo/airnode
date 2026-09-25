@@ -23,7 +23,7 @@ class WifiTests(unittest.TestCase):
         ap = wifi.profile('AirNode-Setup-123', 'password123', 'uuid', True)
         self.assertIn('mode=ap',ap)
         self.assertIn('method=shared',ap)
-        self.assertIn('key-mgmt=wpa-psk',ap)
+        self.assertNotIn('[wifi-security]',ap)
         self.assertIn('autoconnect=false',ap)
 
     def test_nmcli_escaping(self):

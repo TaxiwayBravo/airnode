@@ -1,6 +1,6 @@
 # Wi-Fi setup and recovery
 
-AirNode uses the Pi's built-in Wi-Fi through NetworkManager. A normal Wi-Fi or Ethernet connection takes priority. After 90 seconds without either, it starts a WPA2 setup network named **AirNode-Setup-XXXXXX**, with a unique password for that device and a setup page at **https://10.42.0.1/**. It does not use an open hotspot or a shared default password. A working Ethernet connection keeps the hotspot off.
+AirNode uses the Pi's built-in Wi-Fi through NetworkManager. A normal Wi-Fi or Ethernet connection takes priority. After 90 seconds without either, it starts an **open, local-only setup network** named **AirNode-Setup-XXXXXX**, with a setup page at **https://10.42.0.1/**. The network has no internet route and the page still requires the private pairing token and owner password. A working Ethernet connection keeps the hotspot off.
 
 ## Before the first boot
 

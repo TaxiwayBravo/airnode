@@ -57,8 +57,8 @@ def profile(ssid, password, identifier, hotspot=False):
             f'autoconnect={"false" if hotspot else "true"}\nautoconnect-priority=100\n'
             f'\n[wifi]\nssid={escaped(ssid)}\nmode={"ap" if hotspot else "infrastructure"}\n'
             + ('band=bg\n' if hotspot else 'hidden=true\n') +
-            f'\n[wifi-security]\nkey-mgmt=wpa-psk\npsk={escaped(password)}\n'
-            + ('proto=rsn;\n' if hotspot else '') +
+            ('' if hotspot else f'\n[wifi-security]\nkey-mgmt=wpa-psk\npsk={escaped(password)}\n') +
+            ('' if hotspot else '') +
             ('\n[ipv4]\nmethod=shared\naddress1=10.42.0.1/24\nnever-default=true\n\n[ipv6]\nmethod=disabled\n'
              if hotspot else '\n[ipv4]\nmethod=auto\nmay-fail=false\n\n[ipv6]\nmethod=auto\n'))
 
@@ -82,8 +82,8 @@ def initialize():
     if not created: return
     token = Path('/var/lib/airnode/setup-token')
     # Physical access to the boot partition supplies per-device credentials, not a global default.
-    text = ('AirNode private setup details — keep this card private.\n\nWi-Fi: ' + config['ssid'] +
-            '\nWi-Fi password: ' + config['password'] + '\nSetup: https://10.42.0.1/ or https://' +
+    text = ('AirNode setup details — the setup Wi-Fi is open and local-only.\n\nWi-Fi: ' + config['ssid'] +
+            '\nWi-Fi password: none\nSetup: https://10.42.0.1/ or https://' +
             command(['hostname']) + '.local/\nPairing token: ' + (token.read_text().strip() if token.exists() else 'Already paired') +
             '\n\nCountry must be configured with Raspberry Pi Imager or scripts/prepare-sd.py before wireless use.\n')
     atomic_text('/boot/firmware/AIRNODE-SETUP.txt', text)
