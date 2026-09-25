@@ -34,14 +34,13 @@ async function boot() {
     await loadInstallation();
     const session=await api('session'); configured=session.configured; csrf=session.csrf || '';
     $('shell').hidden=!session.authenticated; $('auth').hidden=session.authenticated;
-    $('token-label').hidden=configured;
     $('auth-title').textContent=configured?'Sign in to your station':'Claim your AirNode';
     $('auth-submit').textContent=configured?'Sign in →':'Create owner account →';
     $('auth-demo').textContent=session.demo?'Demo mode · synthetic aircraft · no host changes':session.local_preview?'Hardware preview · no Pi connected':'';
     if(session.authenticated){ await loadConfig(); await refresh(); view(); }
   } catch(e) { $('auth').hidden=false; $('auth-error').textContent=e.message; }
 }
-$('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-submit').disabled=true;try{const response=await api(configured?'login':'setup',{password:$('login-password').value,token:$('pair-token').value});csrf=response.csrf;$('login-password').value='';$('pair-token').value='';$('auth-error').textContent='';await boot();}catch(err){$('auth-error').textContent=err.message;}finally{$('auth-submit').disabled=false;}});
+$('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-submit').disabled=true;try{const response=await api(configured?'login':'setup',{password:$('login-password').value});csrf=response.csrf;$('login-password').value='';$('auth-error').textContent='';await boot();}catch(err){$('auth-error').textContent=err.message;}finally{$('auth-submit').disabled=false;}});
 $('logout').addEventListener('click',()=>action(async()=>{await api('logout',{});csrf='';await boot();}));
 async function loadConfig(){
   config=await api('config'); const r=config.receiver;

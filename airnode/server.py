@@ -241,9 +241,6 @@ class Handler(BaseHTTPRequestHandler):
                     if path == "/api/setup":
                         if self.app.auth.configured():
                             raise APIError(409, "AirNode already has an owner")
-                        token = str(body.get("token", ""))
-                        if not secrets.compare_digest(token, self.app.setup_path.read_text().strip()):
-                            raise APIError(403, "Invalid pairing token")
                         self.app.auth.password(body.get("password"), initial=True)
                         self.app.setup_path.unlink(missing_ok=True)
                         try: self.app.broker({"op":"onboarding-complete"})

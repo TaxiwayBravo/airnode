@@ -1,6 +1,6 @@
 # Wi-Fi setup and recovery
 
-AirNode uses the Pi's built-in Wi-Fi through NetworkManager. A normal Wi-Fi or Ethernet connection takes priority. After 90 seconds without either, it starts an **open, local-only setup network** named **AirNode-Setup-XXXXXX**, with a setup page at **https://10.42.0.1/**. The network has no internet route and the page still requires the private pairing token and owner password. A working Ethernet connection keeps the hotspot off.
+AirNode uses the Pi's built-in Wi-Fi through NetworkManager. A normal Wi-Fi or Ethernet connection takes priority. After 90 seconds without either, it starts an **open, local-only setup network** named **AirNode-Setup-XXXXXX**, with a setup page at **https://10.42.0.1/**. The network has no internet route; first setup asks only for a new owner password. A working Ethernet connection keeps the hotspot off.
 
 ## Before the first boot
 
@@ -13,7 +13,7 @@ AirNode uses the Pi's built-in Wi-Fi through NetworkManager. A normal Wi-Fi or E
 
 No monitor, keyboard or Ethernet cable is required for first setup: power the Pi, wait for the setup network to appear, and use a phone or laptop to complete pairing. Keep the printed setup details with the device; AirNode never displays the hotspot password through its authenticated API.
 
-Join the named setup Wi-Fi using its unique password. Stay connected even if your device reports **no internet**. Open `https://10.42.0.1/` or the Pi's `.local` hostname; automatic captive-portal pop-ups are not implemented. Verify/trust the Pi's per-device certificate as described in [deployment](DEPLOYMENT.md). Claim ownership with the private token, then open **System → Wi-Fi connection**.
+Join the named setup Wi-Fi with no password. Stay connected even if your device reports **no internet**. Open `https://10.42.0.1/` or the Pi's `.local` hostname; automatic captive-portal pop-ups are not implemented. Verify/trust the Pi's per-device certificate as described in [deployment](DEPLOYMENT.md). Choose an owner password, then open **System → Wi-Fi connection**.
 
 Enter the exact home SSID, its WPA2/WPA3 personal password and your two-letter country code. The network list uses NetworkManager's cached scan results; an unseen/hidden SSID can be entered manually. Enterprise/802.1X, open networks and Wi-Fi 6-only authentication modes are outside this MVP; use Ethernet or local NetworkManager provisioning for those networks.
 
