@@ -2,6 +2,7 @@
 const $ = id => document.getElementById(id);
 let csrf = '', configured = false, config = null, status = null, aircraft = null, lastSample = null, polling = false, confirmation = null, map = null, mapMarkers = new Map(), leafletReady = null;
 let providers = [], selectedProvider = null, aggregatorPolling = false;
+async function loadInstallation(){try{const p=await api('installation');if(!configured||!csrf){$('auth-description').textContent=p.state==='ready'?'Your receiver is ready. Claim it to continue.':`${p.step} (${p.progress}%)`;}}catch{}}
 const escapeHTML = value => String(value ?? '—').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function ensureMapContainer(){let box=$('aircraft-map');if(box)return box;const sky=$('sky');if(!sky)return null;box=document.createElement('div');box.id='aircraft-map';box.className='aircraft-map';box.setAttribute('role','application');box.setAttribute('aria-label','Live aircraft map');box.innerHTML='<div class="map-message">Waiting for a station location and live aircraft positions.</div>';const radar=sky.querySelector('.radar-wrap');if(radar)radar.parentElement.insertBefore(box,radar);if(!document.getElementById('airnode-map-style')){const style=document.createElement('style');style.id='airnode-map-style';style.textContent='.aircraft-map{height:520px;margin:20px;border-radius:8px;overflow:hidden;background:#edf4f3;position:relative}.aircraft-map .map-message{position:absolute;z-index:500;inset:0;display:grid;place-items:center;color:#6d858e;font-size:13px;padding:20px;text-align:center;pointer-events:none}.leaflet-container{font:12px Inter,ui-sans-serif,sans-serif}';document.head.appendChild(style);}return box;}
 function loadLeaflet(){if(window.L)return Promise.resolve(window.L);if(leafletReady)return leafletReady;leafletReady=new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(css);const script=document.createElement('script');script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';script.onload=()=>resolve(window.L);script.onerror=reject;document.head.appendChild(script);});return leafletReady;}
@@ -30,6 +31,7 @@ function view() {
 }
 async function boot() {
   try {
+    await loadInstallation();
     const session=await api('session'); configured=session.configured; csrf=session.csrf || '';
     $('shell').hidden=!session.authenticated; $('auth').hidden=session.authenticated;
     $('token-label').hidden=configured;

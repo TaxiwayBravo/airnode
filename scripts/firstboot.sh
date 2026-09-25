@@ -2,6 +2,9 @@
 set -euo pipefail
 umask 077
 install -d -m 700 -o airnode -g airnode /var/lib/airnode
+status=/var/lib/airnode/installation.json
+write_status() { printf '{"state":"%s","step":"%s","progress":%s}\n' "$1" "$2" "$3" > "$status"; chmod 644 "$status"; }
+write_status running 'Preparing AirNode identity' 10
 install -d -m 700 /etc/airnode/tls
 if [[ ! -f /etc/airnode/tls/key.pem ]]; then
     host=$(hostname)
@@ -27,7 +30,9 @@ fi
 chown -R airnode:airnode /var/lib/airnode
 chmod 700 /var/lib/airnode
 if [[ -f /var/lib/airnode/setup-token ]]; then chmod 600 /var/lib/airnode/setup-token; fi
+write_status running 'Preparing Wi-Fi recovery' 70
 (cd /opt/airnode && python3 -m airnode.wifi init)
+write_status ready 'AirNode is ready for pairing' 100
 touch /var/lib/airnode/initialized
 chown airnode:airnode /var/lib/airnode/initialized
 echo 'AirNode first boot complete. Pairing token is available to the local administrator in /var/lib/airnode/setup-token.'

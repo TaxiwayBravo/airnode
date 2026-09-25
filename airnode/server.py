@@ -283,6 +283,14 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 if path == "/api/health":
                     return self.send(200, {"ok": True, "version": __version__})
+                if path == "/api/installation":
+                    progress = Path('/var/lib/airnode/installation.json')
+                    if not progress.exists():
+                        return self.send(200, {"state":"starting","step":"Waiting for first boot","progress":0})
+                    try:
+                        return self.send(200, json.loads(progress.read_text()))
+                    except (OSError, ValueError):
+                        return self.send(200, {"state":"starting","step":"Preparing AirNode","progress":0})
                 if path == "/api/session":
                     csrf = self.app.auth.lookup(self.token())
                     return self.send(200, {"configured": self.app.auth.configured(), "authenticated": bool(csrf), "csrf": csrf, "demo": self.app.demo, "local_preview": self.app.local_preview})
