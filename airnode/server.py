@@ -280,6 +280,8 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 if path == "/api/health":
                     return self.send(200, {"ok": True, "version": __version__})
+                if path == "/api/onboarding/wifi":
+                    return self.send(200, self.app.broker({"op":"wifi-status"}))
                 if path == "/api/installation":
                     progress = Path('/var/lib/airnode/installation.json')
                     if not progress.exists():
