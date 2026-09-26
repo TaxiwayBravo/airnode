@@ -75,3 +75,8 @@ AirNode's name, interface and orchestration in this repository are original. The
 
 AirNode code is MIT licensed. Third-party packages retain their own licenses. See [THIRD_PARTY.md](THIRD_PARTY.md), especially source distribution obligations before shipping images.
 
+The image also installs a pinned Tar1090 release alongside readsb. It reads the
+local feed and is available at `https://airnode.local/tar1090/` (or the Pi's LAN
+address followed by `/tar1090/`). Tar1090 source and its license are retained in
+`/usr/local/share/airnode/third-party/` on the Pi.
+

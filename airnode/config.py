@@ -73,7 +73,7 @@ def receiver_args(config):
     r = validate(config)["receiver"]
     args = ["/usr/local/bin/readsb", "--device-type=rtlsdr", f"--device={r['device']}",
         f"--gain={r['gain']}", f"--ppm={r['ppm']}", "--net", "--quiet",
-        "--write-json=/run/airnode-readsb", "--write-json-every=1", "--json-location-accuracy=0",
+        "--write-json=/run/airnode-readsb", "--write-json-every=1", "--write-json-globe-index", "--json-location-accuracy=0",
         "--net-bind-address=" + ("0.0.0.0" if r["lan_output"] else "127.0.0.1"),
         "--net-bo-port=30005", "--net-sbs-port=30003", "--net-bi-port=0", "--net-ri-port=0", "--net-ro-port=0"]
     if r["latitude"] is not None:

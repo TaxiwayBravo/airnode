@@ -34,6 +34,7 @@ fi
 chown root:airnode /etc/airnode/config.json
 chmod 640 /etc/airnode/config.json
 bash /opt/airnode/scripts/build-readsb.sh
+bash /opt/airnode/scripts/install-tar1090.sh
 install -m 644 /opt/airnode/deploy/airnode-*.service /etc/systemd/system/
 install -m 644 /opt/airnode/deploy/airnode-*.timer /etc/systemd/system/
 install -m 644 /opt/airnode/deploy/99airnode-provider-permissions /etc/apt/apt.conf.d/
