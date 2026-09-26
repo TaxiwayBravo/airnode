@@ -16,6 +16,11 @@ git -C "$work/tar1090" checkout --detach FETCH_HEAD
 TAR1090_UPDATE_DIR=/usr/local/share/tar1090 AIRNODE_TAR1090=1 \
   bash "$work/tar1090/install.sh" /run/airnode-readsb tar1090 /usr/local/share/tar1090 "$work/tar1090"
 usermod -a -G airnode tar1090
+# Run the generator with the same locked-down account that owns readsb's JSON
+# runtime directory. This avoids a first-boot supplementary-group race.
+if [[ -f /lib/systemd/system/tar1090.service ]]; then
+  sed -i 's/^User=tar1090$/User=airnode-radio/' /lib/systemd/system/tar1090.service
+fi
 install -d -m 755 /usr/local/share/airnode/third-party
 git -C "$work/tar1090" archive --format=tar HEAD | gzip -n > /usr/local/share/airnode/third-party/tar1090-source.tar.gz
 cp "$work/tar1090/LICENSE" /usr/local/share/airnode/third-party/tar1090-LICENSE
