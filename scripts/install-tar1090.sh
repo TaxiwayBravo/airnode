@@ -20,6 +20,7 @@ usermod -a -G airnode tar1090
 # runtime directory. This avoids a first-boot supplementary-group race.
 if [[ -f /lib/systemd/system/tar1090.service ]]; then
   sed -i 's/^User=tar1090$/User=airnode-radio/' /lib/systemd/system/tar1090.service
+  sed -i '/^After=/ s/$/ airnode-receiver.service/; /^Requires=/ s/$/ airnode-receiver.service/' /lib/systemd/system/tar1090.service
 fi
 install -d -m 755 /usr/local/share/airnode/third-party
 git -C "$work/tar1090" archive --format=tar HEAD | gzip -n > /usr/local/share/airnode/third-party/tar1090-source.tar.gz

@@ -41,6 +41,8 @@ install -m 644 /opt/airnode/deploy/99airnode-provider-permissions /etc/apt/apt.c
 install -m 644 /opt/airnode/deploy/airnode.avahi.service /etc/avahi/services/
 install -m 644 /opt/airnode/deploy/99-airnode-sdr.rules /etc/udev/rules.d/
 install -m 644 /opt/airnode/deploy/airnode-sdr.conf /etc/modprobe.d/
+install -m 644 /opt/airnode/deploy/airnode-readsb.conf /etc/tmpfiles.d/airnode-readsb.conf
+systemd-tmpfiles --create /etc/tmpfiles.d/airnode-readsb.conf || true
 # This installer owns the dedicated appliance's default web virtual host.
 install -m 644 /opt/airnode/deploy/nginx.conf /etc/nginx/sites-available/airnode
 rm -f /etc/nginx/sites-enabled/default
