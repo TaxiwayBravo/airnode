@@ -44,7 +44,24 @@ jobs:
           raw_sha256=$(sha256sum build/base.img | cut -d ' ' -f 1)
           printf 'Verified raw image SHA-256: %s\n' "$raw_sha256"
       - name: Build image
+        env:
+          TEST_WIFI_SSID: ${{ secrets.AIRNODE_TEST_WIFI_SSID }}
+          TEST_WIFI_PASSWORD: ${{ secrets.AIRNODE_TEST_WIFI_PASSWORD }}
+          TEST_WIFI_COUNTRY: ${{ secrets.AIRNODE_TEST_WIFI_COUNTRY }}
         run: |
+          if [ -n "$TEST_WIFI_SSID" ] && [ -n "$TEST_WIFI_PASSWORD" ] && [ -n "$TEST_WIFI_COUNTRY" ]; then
+            python3 - <<'PY'
+            import json, os
+            from pathlib import Path
+            Path('deploy/test-wifi.json').write_text(json.dumps({
+                'ssid': os.environ['TEST_WIFI_SSID'],
+                'password': os.environ['TEST_WIFI_PASSWORD'],
+                'country': os.environ['TEST_WIFI_COUNTRY'],
+            }) + '\\n')
+            PY
+          else
+            rm -f deploy/test-wifi.json
+          fi
           version=$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' airnode/__init__.py)
           raw_sha256=$(sha256sum build/base.img | cut -d ' ' -f 1)
           sudo bash scripts/build-image.sh build/base.img "$raw_sha256" "build/airnode-${version}.img"
