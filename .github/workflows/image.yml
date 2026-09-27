@@ -50,15 +50,7 @@ jobs:
           TEST_WIFI_COUNTRY: ${{ secrets.AIRNODE_TEST_WIFI_COUNTRY }}
         run: |
           if [ -n "$TEST_WIFI_SSID" ] && [ -n "$TEST_WIFI_PASSWORD" ] && [ -n "$TEST_WIFI_COUNTRY" ]; then
-            python3 - <<'PY'
-            import json, os
-            from pathlib import Path
-            Path('deploy/test-wifi.json').write_text(json.dumps({
-                'ssid': os.environ['TEST_WIFI_SSID'],
-                'password': os.environ['TEST_WIFI_PASSWORD'],
-                'country': os.environ['TEST_WIFI_COUNTRY'],
-            }) + '\\n')
-            PY
+            python3 -c 'import json,os; from pathlib import Path; Path("deploy/test-wifi.json").write_text(json.dumps({"ssid":os.environ["TEST_WIFI_SSID"],"password":os.environ["TEST_WIFI_PASSWORD"],"country":os.environ["TEST_WIFI_COUNTRY"]})+"\\n")'
           else
             rm -f deploy/test-wifi.json
           fi
