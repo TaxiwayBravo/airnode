@@ -25,7 +25,7 @@ class APIError(Exception):
         self.code, self.message = code, message
 
 class App:
-    def __init__(self, state, demo=False, data="/run/airnode-readsb", config="/etc/airnode/config.json", local_preview=False):
+    def __init__(self, state, demo=False, data="/run/readsb", config="/etc/airnode/config.json", local_preview=False):
         self.state = Path(state)
         self.state.mkdir(parents=True, exist_ok=True)
         self.demo, self.data = demo, Path(data)

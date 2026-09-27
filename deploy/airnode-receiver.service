@@ -11,8 +11,8 @@ WorkingDirectory=/opt/airnode
 ExecStart=/usr/bin/python3 -m airnode.receiver
 Restart=always
 RestartSec=5
-RuntimeDirectory=airnode-readsb
-RuntimeDirectoryMode=0750
+RuntimeDirectory=readsb
+RuntimeDirectoryMode=0755
 UMask=0027
 NoNewPrivileges=true
 ProtectSystem=strict
@@ -22,7 +22,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
-ReadWritePaths=/run/airnode-readsb
+ReadWritePaths=/run/readsb
 
 [Install]
 WantedBy=multi-user.target

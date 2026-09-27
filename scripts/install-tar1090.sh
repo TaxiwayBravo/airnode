@@ -14,7 +14,7 @@ git -C "$work/tar1090" checkout --detach FETCH_HEAD
 # Tar1090's installer creates its generator service and static web assets. The
 # source directory is AirNode's private readsb runtime directory.
 TAR1090_UPDATE_DIR=/usr/local/share/tar1090 AIRNODE_TAR1090=1 \
-  bash "$work/tar1090/install.sh" /run/airnode-readsb tar1090 /usr/local/share/tar1090 "$work/tar1090"
+  bash "$work/tar1090/install.sh" /run/readsb tar1090 /usr/local/share/tar1090 "$work/tar1090"
 usermod -a -G airnode tar1090
 # Run the generator with the same locked-down account that owns readsb's JSON
 # runtime directory. This avoids a first-boot supplementary-group race.
