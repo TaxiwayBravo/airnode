@@ -55,7 +55,11 @@ if [[ ${AIRNODE_IMAGE_BUILD:-0} != 1 ]]; then
     nmcli connection reload
     if [[ ! -f /var/lib/airnode/initialized ]]; then
         station_host=${AIRNODE_HOSTNAME:-$(hostname)}
-        if [[ "$station_host" == raspberrypi || "$station_host" == debian || "$station_host" == airnode ]]; then station_host=yoursky; fi
+        if [[ "$station_host" == raspberrypi || "$station_host" == debian || "$station_host" == airnode ]]; then
+            suffix=$(tr -d '-' < /etc/machine-id | cut -c1-6)
+            [[ "$suffix" =~ ^[a-f0-9]{6}$ ]] || suffix=$(printf '%s' "$(hostname)" | sha256sum | cut -c1-6)
+            station_host="yoursky-$suffix"
+        fi
         [[ "$station_host" =~ ^[a-z][a-z0-9-]{0,61}[a-z0-9]$ || "$station_host" =~ ^[a-z]$ ]] || { echo 'Invalid AirNode hostname'; exit 1; }
         hostnamectl set-hostname "$station_host"
         python3 - "$station_host" <<'PYHOST'
