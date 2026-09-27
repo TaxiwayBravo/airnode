@@ -15,6 +15,12 @@ git -C "$work/tar1090" checkout --detach FETCH_HEAD
 # source directory is AirNode's private readsb runtime directory.
 TAR1090_UPDATE_DIR=/usr/local/share/tar1090 AIRNODE_TAR1090=1 \
   bash "$work/tar1090/install.sh" /run/readsb tar1090 /usr/local/share/tar1090 "$work/tar1090"
+# The installer customizes generated service/config files, which makes its
+# development checkout report a misleading `_dirty` suffix. AirNode keeps the
+# upstream version while recording our integration separately.
+if [[ -f /usr/local/share/tar1090/version ]]; then
+  sed -i 's/_dirty$//' /usr/local/share/tar1090/version
+fi
 usermod -a -G airnode tar1090
 # Run the generator with the same locked-down account that owns readsb's JSON
 # runtime directory. This avoids a first-boot supplementary-group race.
