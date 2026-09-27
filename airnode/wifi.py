@@ -174,7 +174,9 @@ def main():
         initialize()
         return
     initialize()
-    offline_since = time.monotonic()
+    # Make the setup network available immediately on a headless first boot.
+    # It is withdrawn automatically once the saved home network connects.
+    offline_since = time.monotonic() - 90
     while True:
         try:
             if REQUEST.exists():
