@@ -56,7 +56,7 @@ def profile(ssid, password, identifier, hotspot=False):
     return (f'[connection]\nid={AP_ID if hotspot else "AirNode Home"}\nuuid={identifier}\ntype=wifi\n'
             f'autoconnect={"false" if hotspot else "true"}\nautoconnect-priority=100\n'
             f'\n[wifi]\nssid={escaped(ssid)}\nmode={"ap" if hotspot else "infrastructure"}\n'
-            + ('band=bg\n' if hotspot else 'hidden=true\n') +
+            + ('band=bg\n' if hotspot else 'hidden=false\n') +
             ('' if hotspot else f'\n[wifi-security]\nkey-mgmt=wpa-psk\npsk={escaped(password)}\n') +
             ('' if hotspot else '') +
             ('\n[ipv4]\nmethod=shared\naddress1=10.42.0.1/24\nnever-default=true\n\n[ipv6]\nmethod=disabled\n'
