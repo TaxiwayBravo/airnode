@@ -76,9 +76,6 @@ def initialize():
     if created:
         config['uuid'] = str(uuid.uuid4())
         atomic_text(path, json.dumps(config))
-        test_wifi = ROOT / 'test-wifi.json'
-        if test_wifi.exists() and not REQUEST.exists():
-            atomic_text(REQUEST, json.dumps(validate(json.loads(test_wifi.read_text()))), 0o600)
     PROFILES.mkdir(parents=True, exist_ok=True)
     atomic_text(PROFILES / 'airnode-hotspot.nmconnection', profile(config['ssid'], config['password'], config['uuid'], True))
     boot.unlink(missing_ok=True)

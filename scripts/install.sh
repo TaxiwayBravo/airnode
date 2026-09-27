@@ -23,9 +23,6 @@ find /opt/airnode -type f -exec chmod 644 {} +
 chmod 755 /opt/airnode/scripts/*.sh
 install -d -m 750 -o root -g airnode /etc/airnode
 install -d -m 750 -o root -g airnode /etc/airnode/providers
-if [[ -f /opt/airnode/deploy/test-wifi.json ]]; then
-    install -m 600 -o root -g airnode /opt/airnode/deploy/test-wifi.json /etc/airnode/test-wifi.json
-fi
 install -d -m 755 /usr/local/lib
 install -m 644 /opt/airnode/scripts/release-recovery.py /usr/local/lib/airnode-recovery.py
 if [[ ! -e /etc/airnode/update-public.pem ]]; then
