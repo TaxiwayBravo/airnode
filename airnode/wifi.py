@@ -97,7 +97,7 @@ def snapshot(message=None):
     config = json.loads(config_path.read_text()) if config_path.exists() else {}
     result = {'available': bool(wifi), 'hotspot': active, 'connected': uplink,
               'interface': wifi[0] if wifi else None, 'connection': wifi[3] if wifi and wifi[2] == 'connected' else '',
-              'hotspot_ssid': config.get('ssid', ''), 'setup_url': 'https://10.42.0.1/',
+              'hotspot_ssid': config.get('ssid', ''), 'setup_url': 'http://10.42.0.1/',
               'message': message or ('Setup hotspot is ready.' if active else 'Connected to your local network.' if uplink else 'Waiting for a network connection.'), 'demo': False}
     atomic_text(STATE, json.dumps(result), 0o644)
     return result
@@ -128,7 +128,7 @@ def hotspot_up():
     command(['rfkill', 'unblock', 'wlan'])
     command(['nmcli', 'radio', 'wifi', 'on'])
     command(['nmcli', 'connection', 'load', str(PROFILES / 'airnode-hotspot.nmconnection')])
-    command(['nmcli', '--wait', '25', 'connection', 'up', 'uuid', config['uuid']], timeout=30)
+    command(['nmcli', '--wait', '25', 'connection', 'up', 'uuid', config['uuid'], 'ifname', 'wlan0'], timeout=30)
 
 def country_codes():
     codes = json.loads(Path('/usr/share/iso-codes/json/iso_3166-1.json').read_text())['3166-1']
@@ -196,3 +196,5 @@ def main():
         time.sleep(15)
 
 if __name__ == '__main__': main()
+
+
