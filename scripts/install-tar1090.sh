@@ -21,6 +21,9 @@ TAR1090_UPDATE_DIR=/usr/local/share/tar1090 AIRNODE_TAR1090=1 \
 if [[ -f /usr/local/share/tar1090/version ]]; then
   sed -i 's/_dirty$//' /usr/local/share/tar1090/version
 fi
+# The installer embeds its display version in generated HTML and metadata.
+# Remove only the development suffix; leave the upstream version untouched.
+find /usr/local/share/tar1090 -type f \( -name 'index.html' -o -name 'version.json' \) -exec sed -i 's/_dirty//g' {} +
 usermod -a -G airnode tar1090
 # Run the generator with the same locked-down account that owns readsb's JSON
 # runtime directory. This avoids a first-boot supplementary-group race.
