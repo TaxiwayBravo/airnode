@@ -55,8 +55,8 @@ cp -a "$root/airnode" "$root/web" "$root/scripts" "$root/deploy" "$mountpoint/op
 chroot "$mountpoint" /usr/bin/env AIRNODE_IMAGE_BUILD=1 /bin/bash /opt/airnode/scripts/install.sh
 rm -f "$mountpoint/usr/sbin/policy-rc.d" "$mountpoint/etc/resolv.conf"
 mv "$mountpoint/etc/resolv.conf.airnode-backup" "$mountpoint/etc/resolv.conf"
-printf 'airnode\n' > "$mountpoint/etc/hostname"
-sed -i 's/^127\.0\.1\.1.*/127.0.1.1\tairnode/' "$mountpoint/etc/hosts"
+printf 'yoursky\n' > "$mountpoint/etc/hostname"
+sed -i 's/^127\.0\.1\.1.*/127.0.1.1\tyoursky/' "$mountpoint/etc/hosts"
 # A pristine image has no AirNode credentials or TLS identity. Never clone a provisioned Pi.
 [[ ! -e "$mountpoint/var/lib/airnode/auth.db" && ! -e "$mountpoint/etc/airnode/tls/key.pem" ]] || { echo 'Unexpected provisioned identity'; exit 1; }
 : > "$mountpoint/etc/machine-id"
