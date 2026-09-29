@@ -128,7 +128,7 @@ def hotspot_up():
     command(['rfkill', 'unblock', 'wlan'])
     command(['nmcli', 'radio', 'wifi', 'on'])
     command(['nmcli', 'connection', 'load', str(PROFILES / 'airnode-hotspot.nmconnection')])
-    command(['nmcli', '--wait', '25', 'connection', 'up', 'uuid', config['uuid'], 'ifname', 'wlan0'], timeout=30)
+    command(['nmcli', '--wait', '25', 'connection', 'up', 'uuid', config['uuid']], timeout=30)
 
 def country_codes():
     codes = json.loads(Path('/usr/share/iso-codes/json/iso_3166-1.json').read_text())['3166-1']
@@ -196,5 +196,6 @@ def main():
         time.sleep(15)
 
 if __name__ == '__main__': main()
+
 
 
