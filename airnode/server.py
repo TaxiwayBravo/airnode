@@ -232,8 +232,12 @@ class Handler(BaseHTTPRequestHandler):
                 body = self.body()
                 # Reject cross-site browser mutations, including setup/login.
                 origin = self.headers.get("Origin")
-                if origin and origin != ("http" if self.app.demo or self.app.local_preview else "https") + "://" + self.headers.get("Host", ""):
-                    raise APIError(403, "Origin rejected")
+'                if origin:
+                    # Local installs may use HTTP on the setup hotspot or HTTPS on the LAN.
+                    origin_host = urlsplit(origin).hostname
+                    request_host = self.headers.get("Host", "").split(":", 1)[0]
+                    if not origin_host or origin_host.lower() != request_host.lower():
+                        raise APIError(403, "Origin rejected")'
                 if path in ("/api/login", "/api/setup"):
                     ip = self.client_address[0] if self.app.demo else self.headers.get("X-Real-IP", self.client_address[0])
                     if not self.app.auth.throttle(ip):
@@ -345,3 +349,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
