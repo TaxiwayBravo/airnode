@@ -13,6 +13,7 @@ getent group airnode >/dev/null || groupadd --system airnode
 getent group plugdev >/dev/null || groupadd --system plugdev
 id airnode >/dev/null 2>&1 || useradd --system --gid airnode --home-dir /var/lib/airnode --shell /usr/sbin/nologin airnode
 id airnode-radio >/dev/null 2>&1 || useradd --system --gid airnode --groups plugdev --no-create-home --shell /usr/sbin/nologin airnode-radio
+usermod -a -G airnode www-data 2>/dev/null || true
 install -d -m 755 /opt/airnode
 if [[ "$root" != /opt/airnode ]]; then
     cp -a "$root/airnode" "$root/web" "$root/scripts" "$root/deploy" /opt/airnode/
