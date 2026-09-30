@@ -30,4 +30,5 @@ button,.button-link{border-color:#cbdde1;box-shadow:0 2px 5px rgba(18,52,66,.05)
 th{background:#f5f8f9;color:#607a87}
 footer{border-top:1px solid #dbe6ea;margin-top:18px;padding-top:18px}
 @media(max-width:850px){main{padding-inline:16px}.page-heading{padding-top:24px}.card{border-radius:8px}}
-.brand-logo{width:154px;height:auto;display:block}.sidebar .brand-logo{filter:brightness(0) invert(1);width:148px;height:34px;object-fit:contain;object-position:left center}.auth-art .brand-logo{width:160px}
+.brand-logo{width:154px;height:auto;display:block}.sidebar .brand-logo{width:34px;height:34px;object-fit:cover;object-position:left;border-radius:9px}.auth-art .brand-logo{width:160px}
+
