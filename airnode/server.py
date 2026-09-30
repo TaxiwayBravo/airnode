@@ -194,7 +194,11 @@ class Handler(BaseHTTPRequestHandler):
             return ""
 
     def cookie(self, token, age=28800):
-        return f"airnode_session={token}; HttpOnly; SameSite=Strict; Path=/; Max-Age={age}" + ("" if self.app.demo or self.app.local_preview else "; Secure")
+        # The setup hotspot is intentionally plain HTTP; only mark the cookie Secure
+        # when the browser reached us through the HTTPS LAN endpoint.
+        forwarded = self.headers.get("X-Forwarded-Proto", "")
+        secure = forwarded == "https" and not (self.app.demo or self.app.local_preview)
+        return f"airnode_session={token}; HttpOnly; SameSite=Strict; Path=/; Max-Age={age}" + ("; Secure" if secure else "")
 
     def authenticated(self, mutate=False):
         csrf = self.app.auth.lookup(self.token())
