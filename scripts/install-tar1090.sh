@@ -37,4 +37,13 @@ cp "$work/tar1090/LICENSE" /usr/local/share/airnode/third-party/tar1090-LICENSE
 printf '%s\n' "$ref" > /usr/local/share/airnode/third-party/tar1090.commit
 if [[ -f /usr/local/share/tar1090/nginx-tar1090.conf ]]; then
   install -m 644 /usr/local/share/tar1090/nginx-tar1090.conf /etc/nginx/snippets/airnode-tar1090.conf
+else
+  # Keep Nginx bootable even when an upstream Tar1090 checkout changes its
+  # generated snippet name. The static assets remain available locally.
+  cat > /etc/nginx/snippets/airnode-tar1090.conf <<'NGINX'
+location /tar1090/ {
+  alias /usr/local/share/tar1090/;
+  index index.html;
+}
+NGINX
 fi
