@@ -13,9 +13,9 @@
 @media(min-width:2400px){.aggregator-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .access-card{padding:22px 24px}.access-card p{font-size:13px;margin:10px 0}.access-links{display:flex;flex-wrap:wrap;gap:10px}.access-links a{overflow-wrap:anywhere;padding:10px 14px;border:1px solid var(--line);border-radius:7px;background:#f3f8f8}.access-links small{display:block;margin-top:5px}.access-card .footnote{margin-bottom:0}
 
-/* AirNode visual system: calm navy, teal signal accents, and readable surfaces. */
-:root{--ink:#132b3a;--muted:#647986;--line:#dce7eb;--bg:#eef3f5;--teal:#087f78;--nav:#0d2635;--mint:#e5f4ef;--red:#b94d4d}
-body{background:linear-gradient(135deg,#f4f7f8 0%,#edf3f5 55%,#e8f1f2 100%);letter-spacing:.01em}
+/* Your Sky visual system: deep slate, electric cyan signal accents, and clean surfaces. */
+:root{--ink:#172b3d;--muted:#64788a;--line:#d8e4eb;--bg:#f2f6f9;--teal:#087f9b;--nav:#102a43;--mint:#e5f5f8;--red:#b94d4d}
+body{background:linear-gradient(135deg,#f7fafc 0%,#eef4f8 55%,#e8f1f6 100%);letter-spacing:.01em}
 main{max-width:1760px;margin-left:232px;padding-inline:clamp(24px,4vw,72px)}
 .card,.metric{border-color:#dbe6ea;box-shadow:0 10px 30px rgba(20,55,70,.06)}
 .card-heading{border-bottom:1px solid #eef3f5}
@@ -23,9 +23,9 @@ main{max-width:1760px;margin-left:232px;padding-inline:clamp(24px,4vw,72px)}
 .page-heading p{color:#738791}
 .metric strong{color:#15384a;font-weight:680}
 button,.button-link{border-color:#cbdde1;box-shadow:0 2px 5px rgba(18,52,66,.05)}
-.primary{background:#087f78;border-color:#087f78;box-shadow:0 5px 12px rgba(8,127,120,.2)}
-.primary:hover{background:#066b66}
-.health-banner{background:#e5f4ef;border-color:#cce6dc}
+.primary{background:#087f9b;border-color:#087f9b;box-shadow:0 5px 12px rgba(8,127,155,.2)}
+.primary:hover{background:#066b83}
+.health-banner{background:#e5f5f8;border-color:#cce5ed}
 .radar-wrap,.aircraft-map{background:#eaf2f3;border:1px solid #dce9eb}
 th{background:#f5f8f9;color:#607a87}
 footer{border-top:1px solid #dbe6ea;margin-top:18px;padding-top:18px}
